@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { MessageCircle, Instagram, Video, ArrowLeft } from 'lucide-react';
-import { GymCanvas } from '../components/3d/GymCanvas';
 import { usePresentation } from '../engine/usePresentation';
 import { KEVIN_DATA } from '../data/kevinData';
 
@@ -20,40 +19,20 @@ export function Scene09_Final() {
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050608]">
-      {/* 3D background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <GymCanvas sceneType="footer" className="w-full h-full" />
-      </div>
-
-      {/* Gradient overlays */}
+    <div className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden">
+      {/* Readability backdrop: Kevin is centered in 3D world right behind */}
       <div
-        className="absolute inset-0 z-[1] pointer-events-none"
-        style={{ background: 'linear-gradient(to bottom, #050608 0%, rgba(5,6,8,0.65) 50%, #050608 100%)' }}
-      />
-      <div
-        className="absolute inset-0 z-[1] pointer-events-none"
-        style={{ background: 'linear-gradient(to right, #050608 0%, transparent 30%, transparent 70%, #050608 100%)' }}
-      />
-
-      {/* Electric glow center */}
-      <div
-        className="absolute z-[2] pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          width: '600px',
-          height: '600px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(0,210,255,0.07) 0%, rgba(139,92,246,0.04) 50%, transparent 70%)',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          background:
+            'radial-gradient(circle at 50% 50%, rgba(5,6,8,0.7) 0%, rgba(5,6,8,0.85) 60%, rgba(5,6,8,0.95) 100%)',
         }}
       />
 
       {/* Back button */}
       <button
         onClick={goPrev}
-        className="absolute top-8 left-8 z-10 flex items-center gap-2 text-white/30 hover:text-white text-xs font-medium uppercase tracking-widest transition-colors"
+        className="absolute top-8 left-8 z-20 flex items-center gap-2 text-white/40 hover:text-white text-xs font-semibold uppercase tracking-widest transition-colors glass-panel px-4 py-2 rounded-full border border-white/10"
       >
         <ArrowLeft size={14} />
         Planes
@@ -62,7 +41,7 @@ export function Scene09_Final() {
       {/* Main content */}
       <div
         ref={contentRef}
-        className="relative z-10 max-w-2xl mx-auto px-6 text-center"
+        className="relative z-10 max-w-2xl mx-auto px-6 text-center py-20"
       >
         {/* Eyebrow */}
         <div className="anim-el flex items-center justify-center gap-3 mb-6">
@@ -74,7 +53,7 @@ export function Scene09_Final() {
         </div>
 
         {/* Kevin name */}
-        <div className="anim-el text-[10px] tracking-[0.5em] text-white/25 uppercase mb-4">
+        <div className="anim-el text-xs tracking-[0.5em] text-white/40 uppercase mb-4 font-mono font-bold">
           Kevin Nefi · Personal Trainer
         </div>
 
@@ -85,7 +64,7 @@ export function Scene09_Final() {
         </h2>
 
         {/* Body */}
-        <p className="anim-el text-white/50 text-lg font-light leading-relaxed max-w-md mx-auto mb-10">
+        <p className="anim-el text-white/70 text-lg font-light leading-relaxed max-w-md mx-auto mb-10">
           Empieza tu proceso con{' '}
           <span className="text-white font-medium">Kevin Nefi.</span>
           <br />
@@ -97,14 +76,14 @@ export function Scene09_Final() {
           href={KEVIN_DATA.whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="anim-el group relative inline-flex items-center gap-3 px-10 py-5 rounded-full text-white font-bold text-base uppercase tracking-widest overflow-hidden mb-6"
+          className="anim-el group relative inline-flex items-center gap-3 px-10 py-5 rounded-full text-white font-bold text-base uppercase tracking-widest overflow-hidden mb-6 shadow-2xl"
           style={{
             background: 'linear-gradient(135deg, #00d2ff 0%, #0066ff 50%, #8b5cf6 100%)',
           }}
         >
           <span
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-            style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%)' }}
+            style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%)' }}
           />
           <MessageCircle size={20} className="relative z-10" />
           <span className="relative z-10">Empezar mi Proceso</span>
@@ -113,7 +92,7 @@ export function Scene09_Final() {
         {/* Divider */}
         <div className="anim-el flex items-center justify-center gap-4 my-6">
           <div className="h-px flex-1 max-w-[70px] bg-white/10" />
-          <span className="text-[10px] text-white/25 tracking-widest uppercase">o encuéntrame en</span>
+          <span className="text-[10px] text-white/30 tracking-widest uppercase font-semibold">o encuéntrame en</span>
           <div className="h-px flex-1 max-w-[70px] bg-white/10" />
         </div>
 
@@ -123,10 +102,10 @@ export function Scene09_Final() {
             href={KEVIN_DATA.socials.instagram.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 hover:border-[#00d2ff]/40 bg-white/[0.03] hover:bg-[#00d2ff]/5 transition-all duration-300"
+            className="group flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 hover:border-[#00d2ff]/60 bg-white/[0.04] hover:bg-[#00d2ff]/10 transition-all duration-300"
           >
-            <Instagram size={15} className="text-white/40 group-hover:text-[#00d2ff] transition-colors" />
-            <span className="text-sm text-white/50 group-hover:text-white transition-colors">
+            <Instagram size={16} className="text-white/50 group-hover:text-[#00d2ff] transition-colors" />
+            <span className="text-sm text-white/70 group-hover:text-white transition-colors">
               {KEVIN_DATA.socials.instagram.handle}
             </span>
           </a>
@@ -134,17 +113,17 @@ export function Scene09_Final() {
             href={KEVIN_DATA.socials.tiktok.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 hover:border-[#8b5cf6]/40 bg-white/[0.03] hover:bg-[#8b5cf6]/5 transition-all duration-300"
+            className="group flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 hover:border-[#8b5cf6]/60 bg-white/[0.04] hover:bg-[#8b5cf6]/10 transition-all duration-300"
           >
-            <Video size={15} className="text-white/40 group-hover:text-[#8b5cf6] transition-colors" />
-            <span className="text-sm text-white/50 group-hover:text-white transition-colors">
+            <Video size={16} className="text-white/50 group-hover:text-[#8b5cf6] transition-colors" />
+            <span className="text-sm text-white/70 group-hover:text-white transition-colors">
               {KEVIN_DATA.socials.tiktok.handle}
             </span>
           </a>
         </div>
 
         {/* Footnote */}
-        <p className="anim-el mt-10 text-[10px] text-white/15 tracking-[0.3em] uppercase">
+        <p className="anim-el mt-10 text-[11px] text-white/30 tracking-[0.3em] uppercase font-mono">
           Makina 1 & Makina 2 · Santa Cruz, Bolivia
         </p>
       </div>

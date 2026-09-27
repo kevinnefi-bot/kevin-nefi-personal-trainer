@@ -1,9 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ArrowRight } from 'lucide-react';
-import { GymCanvas } from '../components/3d/GymCanvas';
 import { usePresentation } from '../engine/usePresentation';
-import { KEVIN_DATA } from '../data/kevinData';
 
 const STORY_PARAGRAPHS = [
   'Tengo 22 años y llevo alrededor de 2 años entrenando.',
@@ -28,45 +26,25 @@ export function Scene02_Story() {
     gsap.fromTo(
       els,
       { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.75, stagger: 0.15, ease: 'power3.out', delay: 0.15 }
+      { y: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power3.out', delay: 0.15 }
     );
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen flex overflow-hidden bg-[#050608]">
-      {/* Background radial glow */}
+    <div className="relative w-full min-h-screen flex overflow-hidden">
+      {/* Readability gradient: Kevin is on the left in 3D world, text on the right */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse 50% 70% at 20% 50%, rgba(0,102,255,0.09) 0%, transparent 70%)',
+            'linear-gradient(to left, rgba(5,6,8,0.94) 0%, rgba(5,6,8,0.85) 50%, rgba(5,6,8,0.2) 80%, transparent 100%)',
         }}
       />
-
-      {/* LEFT — 3D Kevin character */}
-      <div className="absolute left-0 top-0 w-full md:w-[45%] h-full pointer-events-none opacity-80">
-        <GymCanvas sceneType="hero" className="w-full h-full" />
-        {/* Character rim glow overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(ellipse 60% 80% at 50% 50%, rgba(0,210,255,0.06) 0%, transparent 70%)',
-          }}
-        />
-        {/* Fade to right */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to right, transparent 60%, #050608 100%)',
-          }}
-        />
-      </div>
 
       {/* RIGHT — Story content */}
       <div
         ref={contentRef}
-        className="relative z-10 flex flex-col justify-center ml-auto w-full md:w-[55%] px-8 md:px-12 lg:px-20 py-20 pb-28"
+        className="relative z-10 flex flex-col justify-center ml-auto w-full md:w-[58%] px-8 md:px-14 lg:px-20 py-20 pb-28"
       >
         {/* Eyebrow */}
         <div className="anim-el flex items-center gap-3 mb-6">
@@ -82,11 +60,11 @@ export function Scene02_Story() {
         </h2>
 
         {/* Story paragraphs */}
-        <div className="space-y-4 mb-8">
+        <div className="space-y-4 mb-8 max-w-xl">
           {STORY_PARAGRAPHS.map((p, i) => (
             <p
               key={i}
-              className="anim-el text-white/65 text-base md:text-lg font-light leading-relaxed border-l-2 border-[#00d2ff]/25 pl-4"
+              className="anim-el text-white/70 text-base md:text-lg font-light leading-relaxed border-l-2 border-[#00d2ff]/30 pl-4 glass-panel py-2 px-3 rounded-r-xl"
             >
               {p}
             </p>
@@ -96,9 +74,9 @@ export function Scene02_Story() {
         {/* Stats */}
         <div className="anim-el flex flex-wrap gap-3 mb-10">
           {STATS.map((s, i) => (
-            <div key={i} className="glass-panel rounded-full px-4 py-2 flex flex-col items-center">
-              <span className="text-white font-bold text-sm">{s.value}</span>
-              <span className="text-white/40 text-xs">{s.label}</span>
+            <div key={i} className="glass-panel rounded-full px-5 py-2.5 flex flex-col items-center border border-white/10">
+              <span className="text-white font-bold text-base">{s.value}</span>
+              <span className="text-white/40 text-xs tracking-wider uppercase">{s.label}</span>
             </div>
           ))}
         </div>
@@ -112,12 +90,6 @@ export function Scene02_Story() {
           <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
         </button>
       </div>
-
-      {/* Mobile dark gradient over canvas */}
-      <div
-        className="absolute inset-0 md:hidden pointer-events-none z-[2]"
-        style={{ background: 'linear-gradient(to bottom, #050608 0%, transparent 40%, #050608 100%)' }}
-      />
     </div>
   );
 }

@@ -48,7 +48,7 @@ export const KEVIN_DATA = {
     title: "YOUR PROGRESS. IN YOUR HANDS.",
     subtitle: "MYPROGRESS",
     statusBadge: "Functional Beta",
-    appUrl: "https://myprogress-beta.kevinnefi.com", // Configurable URL
+    appUrl: "https://myprogress-ashy.vercel.app/",
     description: "Espacio digital de seguimiento diseñado para estructurar y monitorear el proceso real de cada cliente: rutinas, nutrición, evolución y métricas claras.",
     features: [
       "Rutinas personalizadas estructuradas por semanas",

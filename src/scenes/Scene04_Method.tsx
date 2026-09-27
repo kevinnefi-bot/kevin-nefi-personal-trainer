@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ArrowRight } from 'lucide-react';
-import { GymCanvas } from '../components/3d/GymCanvas';
 import { usePresentation } from '../engine/usePresentation';
 
 const METHOD_STEPS = [
@@ -78,24 +77,20 @@ export function Scene04_Method() {
   const step = METHOD_STEPS[activeStep];
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col md:flex-row overflow-hidden bg-[#050608] pb-20">
-      {/* Ambient 3D bg */}
-      <div className="absolute inset-0 pointer-events-none opacity-20">
-        <GymCanvas sceneType="method" className="w-full h-full" />
-      </div>
-
-      {/* Blue radial glow */}
+    <div className="relative w-full min-h-screen flex flex-col md:flex-row overflow-hidden pb-20">
+      {/* Readability gradient */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 60% 60% at 80% 50%, rgba(0,102,255,0.07) 0%, transparent 70%)',
+          background:
+            'linear-gradient(to right, rgba(5,6,8,0.95) 0%, rgba(5,6,8,0.85) 50%, rgba(5,6,8,0.3) 100%)',
         }}
       />
 
       {/* LEFT — Step list */}
       <div
         ref={listRef}
-        className="relative z-10 flex flex-col justify-center px-8 md:px-12 lg:px-20 pt-20 md:pt-0 w-full md:w-[38%]"
+        className="relative z-10 flex flex-col justify-center px-8 md:px-12 lg:px-20 pt-20 md:pt-0 w-full md:w-[42%]"
       >
         {/* Eyebrow + title */}
         <div className="mb-8">
@@ -109,11 +104,11 @@ export function Scene04_Method() {
             ASÍ{' '}
             <span className="text-gradient-electric">TRABAJAMOS.</span>
           </h2>
-          <p className="text-white/40 text-sm mt-2">Selecciona cada etapa para explorarla.</p>
+          <p className="text-white/50 text-sm mt-2">Selecciona cada etapa para explorarla.</p>
         </div>
 
         {/* Steps */}
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           {METHOD_STEPS.map((s, i) => (
             <button
               key={i}
@@ -122,13 +117,13 @@ export function Scene04_Method() {
                 'step-item w-full text-left px-4 py-3 rounded-xl transition-all duration-250 flex items-center gap-3 group',
                 i === activeStep
                   ? 'glass-panel-active border-l-2 border-[#00d2ff]'
-                  : 'hover:bg-white/[0.03] border-l-2 border-transparent',
+                  : 'hover:bg-white/[0.04] border-l-2 border-transparent glass-panel',
               ].join(' ')}
             >
               <span
                 className={[
                   'text-xs font-mono font-bold w-7 flex-shrink-0 transition-colors',
-                  i === activeStep ? 'text-[#00d2ff]' : 'text-white/25 group-hover:text-white/50',
+                  i === activeStep ? 'text-[#00d2ff]' : 'text-white/30 group-hover:text-white/60',
                 ].join(' ')}
               >
                 {s.step}
@@ -136,7 +131,7 @@ export function Scene04_Method() {
               <span
                 className={[
                   'font-semibold text-sm uppercase tracking-wide transition-colors',
-                  i === activeStep ? 'text-white' : 'text-white/40 group-hover:text-white/70',
+                  i === activeStep ? 'text-white' : 'text-white/50 group-hover:text-white/80',
                 ].join(' ')}
               >
                 {s.name}
@@ -144,7 +139,7 @@ export function Scene04_Method() {
               <span
                 className={[
                   'ml-auto text-xl transition-opacity',
-                  i === activeStep ? 'opacity-100' : 'opacity-0 group-hover:opacity-60',
+                  i === activeStep ? 'opacity-100' : 'opacity-20 group-hover:opacity-60',
                 ].join(' ')}
               >
                 {s.icon}
@@ -156,7 +151,7 @@ export function Scene04_Method() {
         {/* Nav CTA */}
         <button
           onClick={goNext}
-          className="mt-10 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-[#00d2ff] hover:text-white transition-colors group w-fit"
+          className="mt-8 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-[#00d2ff] hover:text-white transition-colors group w-fit"
         >
           Siguiente: Servicios
           <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -164,31 +159,31 @@ export function Scene04_Method() {
       </div>
 
       {/* RIGHT — Step detail */}
-      <div className="relative z-10 flex flex-col justify-center w-full md:w-[62%] px-8 md:px-12 lg:px-16 py-10 md:py-20">
-        <div ref={detailRef} className="relative">
+      <div className="relative z-10 flex flex-col justify-center w-full md:w-[58%] px-8 md:px-12 lg:px-16 py-10 md:py-20">
+        <div ref={detailRef} className="relative glass-panel p-8 md:p-12 rounded-3xl border border-white/10 max-w-lg">
           {/* Big step number watermark */}
           <span
-            className="absolute -top-8 right-0 font-black text-[120px] md:text-[160px] leading-none text-white/[0.04] select-none pointer-events-none"
+            className="absolute -top-6 right-6 font-black text-[100px] md:text-[130px] leading-none text-white/[0.05] select-none pointer-events-none font-mono"
             aria-hidden="true"
           >
             {step.step}
           </span>
 
           {/* Step icon */}
-          <div className="text-5xl mb-5">{step.icon}</div>
+          <div className="text-5xl mb-4">{step.icon}</div>
 
           {/* Step name */}
-          <h3 className="font-black uppercase text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
+          <h3 className="font-black uppercase text-3xl md:text-4xl text-white leading-tight mb-3">
             {step.name}
           </h3>
 
           {/* Description */}
-          <p className="text-white/65 text-lg font-light leading-relaxed max-w-md mb-5">
+          <p className="text-white/70 text-base md:text-lg font-light leading-relaxed mb-5">
             {step.description}
           </p>
 
           {/* Visual hint */}
-          <p className="text-[#00d2ff]/60 text-sm italic border-l-2 border-[#00d2ff]/25 pl-4">
+          <p className="text-[#00d2ff] text-sm italic border-l-2 border-[#00d2ff]/40 pl-4 py-1">
             {step.visual}
           </p>
 
@@ -204,7 +199,7 @@ export function Scene04_Method() {
                   width: i === activeStep ? '24px' : '8px',
                   height: '8px',
                   borderRadius: '4px',
-                  backgroundColor: i === activeStep ? '#00d2ff' : 'rgba(255,255,255,0.15)',
+                  backgroundColor: i === activeStep ? '#00d2ff' : 'rgba(255,255,255,0.2)',
                   transition: 'all 0.3s ease',
                 }}
               />

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ArrowRight } from 'lucide-react';
-import { GymCanvas } from '../components/3d/GymCanvas';
 import { usePresentation } from '../engine/usePresentation';
 import { KEVIN_DATA } from '../data/kevinData';
 
@@ -10,56 +9,57 @@ function ServiceVisual({ index }: { index: number }) {
   if (index === 0) {
     // Evaluación — body measurement graphic
     return (
-      <div className="w-full h-56 flex items-center justify-center relative rounded-2xl overflow-hidden bg-[#0a0d14] border border-white/5">
+      <div className="w-full h-52 flex items-center justify-center relative rounded-2xl overflow-hidden glass-panel border border-white/10">
         <div className="flex flex-col items-center gap-3">
-          {/* Stylized body silhouette made with CSS */}
+          {/* Stylized body silhouette */}
           <div className="relative w-16 h-28">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 border-[#00d2ff]/60 bg-[#00d2ff]/10" />
-            <div className="absolute top-9 left-1/2 -translate-x-1/2 w-10 h-14 rounded-lg border-2 border-[#00d2ff]/40 bg-[#00d2ff]/5" />
-            <div className="absolute top-[52px] left-0 w-4 h-10 rounded-full border border-[#8b5cf6]/40 bg-[#8b5cf6]/5" />
-            <div className="absolute top-[52px] right-0 w-4 h-10 rounded-full border border-[#8b5cf6]/40 bg-[#8b5cf6]/5" />
-            <div className="absolute bottom-0 left-2 w-4 h-8 rounded-full border border-[#00d2ff]/30 bg-[#00d2ff]/5" />
-            <div className="absolute bottom-0 right-2 w-4 h-8 rounded-full border border-[#00d2ff]/30 bg-[#00d2ff]/5" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 border-[#00d2ff]/80 bg-[#00d2ff]/20" />
+            <div className="absolute top-9 left-1/2 -translate-x-1/2 w-10 h-14 rounded-lg border-2 border-[#00d2ff]/60 bg-[#00d2ff]/10" />
+            <div className="absolute top-[52px] left-0 w-4 h-10 rounded-full border border-[#8b5cf6]/60 bg-[#8b5cf6]/10" />
+            <div className="absolute top-[52px] right-0 w-4 h-10 rounded-full border border-[#8b5cf6]/60 bg-[#8b5cf6]/10" />
+            <div className="absolute bottom-0 left-2 w-4 h-8 rounded-full border border-[#00d2ff]/40 bg-[#00d2ff]/10" />
+            <div className="absolute bottom-0 right-2 w-4 h-8 rounded-full border border-[#00d2ff]/40 bg-[#00d2ff]/10" />
           </div>
-          {/* Measurement lines */}
-          <div className="flex gap-4 text-xs text-white/40">
-            <span className="flex items-center gap-1">
-              <div className="w-8 h-px bg-[#00d2ff]/40" />
-              Punto inicial
+          {/* Measurement indicators */}
+          <div className="flex gap-4 text-xs text-[#00d2ff]">
+            <span className="flex items-center gap-1.5 font-mono">
+              <div className="w-6 h-px bg-[#00d2ff]" />
+              DIAGNÓSTICO INICIAL
             </span>
           </div>
         </div>
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(circle at 50% 50%, rgba(0,210,255,0.05) 0%, transparent 70%)' }}
-        />
       </div>
     );
   }
 
   if (index === 1) {
-    // Entrenamiento — mini 3D canvas
+    // Entrenamiento — Gym focus visual
     return (
-      <div className="w-full h-56 rounded-2xl overflow-hidden border border-white/5 relative">
-        <GymCanvas sceneType="hero" className="w-full h-full" />
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'linear-gradient(to top, #0a0d14 0%, transparent 60%)' }}
-        />
+      <div className="w-full h-52 rounded-2xl overflow-hidden glass-panel border border-white/10 flex flex-col items-center justify-center p-6 text-center">
+        <div className="text-4xl mb-3">🏋️‍♂️</div>
+        <div className="text-sm font-bold text-white uppercase tracking-wider mb-1">Hipertrofia & Fuerza</div>
+        <div className="text-xs text-white/50">Makina 1, Makina 2 o a domicilio</div>
       </div>
     );
   }
 
   if (index === 2) {
-    // Nutrición — food emojis grid
-    const foods = ['🍗', '🥦', '🍚', '🍎', '🥚', '💧', '🥑', '🥝'];
+    // Nutrición — food icons grid
+    const foods = [
+      { e: '🍗', n: 'Proteína' },
+      { e: '🥦', n: 'Micros' },
+      { e: '🍚', n: 'Energía' },
+      { e: '🥑', n: 'Grasas' },
+      { e: '💧', n: 'Agua' },
+      { e: '🍎', n: 'Fibra' },
+    ];
     return (
-      <div className="w-full h-56 rounded-2xl overflow-hidden bg-[#0a0d14] border border-white/5 flex items-center justify-center p-4">
-        <div className="grid grid-cols-4 gap-3 text-center">
+      <div className="w-full h-52 rounded-2xl overflow-hidden glass-panel border border-white/10 flex items-center justify-center p-4">
+        <div className="grid grid-cols-3 gap-4 text-center">
           {foods.map((f, i) => (
             <div key={i} className="flex flex-col items-center gap-1">
-              <span className="text-3xl">{f}</span>
-              <div className="w-4 h-0.5 bg-[#00d2ff]/20 rounded-full" />
+              <span className="text-3xl">{f.e}</span>
+              <span className="text-[11px] text-white/60 font-medium">{f.n}</span>
             </div>
           ))}
         </div>
@@ -72,16 +72,16 @@ function ServiceVisual({ index }: { index: number }) {
     const days = Array.from({ length: 28 }, (_, i) => i + 1);
     const checked = [1, 3, 5, 8, 10, 12, 15, 17, 19, 22, 24, 26];
     return (
-      <div className="w-full h-56 rounded-2xl bg-[#0a0d14] border border-white/5 p-4 overflow-hidden">
-        <div className="text-xs text-white/30 uppercase tracking-widest mb-3">Historial de sesiones</div>
+      <div className="w-full h-52 rounded-2xl glass-panel border border-white/10 p-5 overflow-hidden">
+        <div className="text-xs text-white/50 uppercase tracking-widest mb-3 font-semibold">Registro de constancia</div>
         <div className="grid grid-cols-7 gap-1.5">
           {days.map((d) => (
             <div
               key={d}
               className={[
-                'w-6 h-6 rounded flex items-center justify-center text-[10px] font-medium transition-colors',
+                'w-7 h-7 rounded flex items-center justify-center text-[10px] font-bold transition-colors',
                 checked.includes(d)
-                  ? 'bg-[#00d2ff]/20 text-[#00d2ff] border border-[#00d2ff]/30'
+                  ? 'bg-[#00d2ff]/25 text-[#00d2ff] border border-[#00d2ff]/50'
                   : 'bg-white/[0.03] text-white/20 border border-white/5',
               ].join(' ')}
             >
@@ -95,13 +95,10 @@ function ServiceVisual({ index }: { index: number }) {
 
   // index === 4: MyProgress
   return (
-    <div className="w-full h-56 rounded-2xl overflow-hidden border border-white/5 relative">
-      <GymCanvas sceneType="myprogress" className="w-full h-full" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="glass-panel rounded-xl px-4 py-2 text-xs text-[#00d2ff] font-semibold tracking-widest uppercase border border-[#00d2ff]/20">
-          MyProgress Beta
-        </div>
-      </div>
+    <div className="w-full h-52 rounded-2xl overflow-hidden glass-panel border border-white/10 flex flex-col items-center justify-center p-6 text-center">
+      <div className="text-4xl mb-3">📱</div>
+      <div className="text-sm font-bold text-white uppercase tracking-wider mb-1">MyProgress Beta</div>
+      <div className="text-xs text-[#00d2ff] font-mono">App de control en tiempo real</div>
     </div>
   );
 }
@@ -128,17 +125,20 @@ export function Scene05_Services() {
   const service = KEVIN_DATA.services[activeService];
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col md:flex-row overflow-hidden bg-[#050608] pb-20">
-      {/* Violet ambient */}
+    <div className="relative w-full min-h-screen flex flex-col md:flex-row overflow-hidden pb-20">
+      {/* Readability gradient */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 50% at 100% 50%, rgba(139,92,246,0.07) 0%, transparent 70%)' }}
+        style={{
+          background:
+            'linear-gradient(to right, rgba(5,6,8,0.95) 0%, rgba(5,6,8,0.85) 50%, rgba(5,6,8,0.4) 100%)',
+        }}
       />
 
       {/* LEFT — service list */}
       <div
         ref={listRef}
-        className="relative z-10 flex flex-col justify-center px-8 md:px-12 lg:px-20 pt-20 md:pt-0 w-full md:w-[38%]"
+        className="relative z-10 flex flex-col justify-center px-8 md:px-12 lg:px-20 pt-20 md:pt-0 w-full md:w-[42%]"
       >
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
@@ -153,7 +153,7 @@ export function Scene05_Services() {
           </h2>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           {KEVIN_DATA.services.map((s, i) => (
             <button
               key={i}
@@ -162,13 +162,13 @@ export function Scene05_Services() {
                 'service-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-250 group flex items-center gap-3',
                 i === activeService
                   ? 'glass-panel-active border-l-2 border-[#8b5cf6]'
-                  : 'hover:bg-white/[0.03] border-l-2 border-transparent',
+                  : 'hover:bg-white/[0.04] border-l-2 border-transparent glass-panel',
               ].join(' ')}
             >
               <span
                 className={[
                   'text-xs font-mono font-bold w-7 flex-shrink-0',
-                  i === activeService ? 'text-[#8b5cf6]' : 'text-white/25 group-hover:text-white/50',
+                  i === activeService ? 'text-[#8b5cf6]' : 'text-white/30 group-hover:text-white/60',
                 ].join(' ')}
               >
                 {s.number}
@@ -176,7 +176,7 @@ export function Scene05_Services() {
               <span
                 className={[
                   'font-semibold text-sm uppercase tracking-wide transition-colors leading-tight',
-                  i === activeService ? 'text-white' : 'text-white/40 group-hover:text-white/70',
+                  i === activeService ? 'text-white' : 'text-white/50 group-hover:text-white/80',
                 ].join(' ')}
               >
                 {s.title}
@@ -187,7 +187,7 @@ export function Scene05_Services() {
 
         <button
           onClick={goNext}
-          className="mt-10 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-[#8b5cf6] hover:text-white transition-colors group w-fit"
+          className="mt-8 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-[#8b5cf6] hover:text-white transition-colors group w-fit"
         >
           Siguiente: MyProgress
           <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -195,22 +195,22 @@ export function Scene05_Services() {
       </div>
 
       {/* RIGHT — service detail */}
-      <div className="relative z-10 flex flex-col justify-center w-full md:w-[62%] px-8 md:px-12 lg:px-16 py-10 md:py-20">
-        <div ref={detailRef}>
+      <div className="relative z-10 flex flex-col justify-center w-full md:w-[58%] px-8 md:px-12 lg:px-16 py-10 md:py-20">
+        <div ref={detailRef} className="glass-panel p-8 md:p-10 rounded-3xl border border-white/10 max-w-lg">
           {/* Service visual */}
           <ServiceVisual index={activeService} />
 
           {/* Service info */}
           <div className="mt-6">
             <div className="flex items-center gap-3 mb-3">
-              <span className="glass-panel rounded-full px-3 py-1 text-xs font-semibold text-[#8b5cf6] border border-[#8b5cf6]/30">
+              <span className="glass-panel rounded-full px-3.5 py-1 text-xs font-semibold text-[#8b5cf6] border border-[#8b5cf6]/40">
                 {service?.tag}
               </span>
             </div>
             <h3 className="font-black uppercase text-2xl md:text-3xl text-white mb-3 leading-tight">
               {service?.title}
             </h3>
-            <p className="text-white/60 text-base leading-relaxed max-w-lg">
+            <p className="text-white/65 text-base leading-relaxed">
               {service?.description}
             </p>
           </div>

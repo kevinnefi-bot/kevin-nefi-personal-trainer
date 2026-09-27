@@ -11,28 +11,28 @@ const PLAN_ACCENTS: Record<string, string> = {
   dias3: '#22d3ee',
 };
 
-function PlatePriceVisual({ price, accent }: { price: string; accent: string }) {
+function PlatePriceVisual({ accent }: { price: string; accent: string }) {
   return (
     <div className="relative w-16 h-16 mb-4 mx-auto">
-      {/* Outer ring — big plate */}
+      {/* Outer ring */}
       <div
         className="absolute inset-0 rounded-full border-4"
-        style={{ borderColor: `${accent}30` }}
+        style={{ borderColor: `${accent}40` }}
       />
       {/* Middle ring */}
       <div
         className="absolute inset-2 rounded-full border-2"
-        style={{ borderColor: `${accent}60` }}
+        style={{ borderColor: `${accent}80` }}
       />
-      {/* Inner circle — center hole */}
+      {/* Center opening */}
       <div
         className="absolute inset-[10px] rounded-full flex items-center justify-center"
         style={{
-          background: `${accent}15`,
+          background: `${accent}20`,
           border: `1.5px solid ${accent}`,
         }}
       >
-        <span className="text-[8px] font-black text-white leading-none text-center">
+        <span className="text-[9px] font-black text-white leading-none text-center font-mono">
           Bs
         </span>
       </div>
@@ -57,15 +57,18 @@ export function Scene08_Plans() {
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col justify-center overflow-hidden bg-[#050608] px-6 md:px-16 lg:px-24 py-20 pb-28">
-      {/* Blue radial */}
+    <div className="relative w-full min-h-screen flex flex-col justify-center overflow-hidden px-6 md:px-16 lg:px-24 py-20 pb-28">
+      {/* Readability backdrop: Kevin and plate pedestals are in 3D world background */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0,102,255,0.07) 0%, transparent 70%)' }}
+        style={{
+          background:
+            'radial-gradient(ellipse 90% 70% at 50% 50%, rgba(5,6,8,0.92) 0%, rgba(5,6,8,0.75) 70%, rgba(5,6,8,0.3) 100%)',
+        }}
       />
 
       {/* Header */}
-      <div className="relative z-10 mb-10">
+      <div className="relative z-10 mb-8 max-w-2xl">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-px bg-[#00d2ff]" />
           <span className="text-xs font-semibold tracking-[0.3em] uppercase text-[#00d2ff]">
@@ -76,7 +79,7 @@ export function Scene08_Plans() {
           ¿CÓMO QUIERES{' '}
           <span className="text-gradient-electric">EMPEZAR?</span>
         </h2>
-        <p className="text-white/40 text-base mt-2">
+        <p className="text-white/50 text-base mt-2">
           Cada persona tiene su ritmo. Elige el que se adapta a ti.
         </p>
       </div>
@@ -84,7 +87,7 @@ export function Scene08_Plans() {
       {/* Plans grid */}
       <div
         ref={gridRef}
-        className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mb-10"
+        className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mb-8"
       >
         {KEVIN_DATA.plans.map((plan, i) => {
           const accent = PLAN_ACCENTS[plan.id] ?? '#00d2ff';
@@ -94,14 +97,14 @@ export function Scene08_Plans() {
               key={plan.id}
               onClick={() => setActivePlan(isActive ? null : i)}
               className={[
-                'plan-card relative rounded-2xl p-5 cursor-pointer transition-all duration-300',
-                isActive ? 'glass-panel-active scale-[1.02]' : 'glass-panel hover:scale-[1.01] hover:border-white/15',
+                'plan-card relative rounded-2xl p-5 cursor-pointer transition-all duration-300 border border-white/10',
+                isActive ? 'glass-panel-active scale-[1.02] border-[#00d2ff]/50' : 'glass-panel hover:scale-[1.01] hover:border-white/20',
               ].join(' ')}
             >
               {/* Popular badge */}
               {plan.popular && (
                 <div
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full"
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg"
                   style={{ background: accent, color: '#050608' }}
                 >
                   Más Popular
@@ -118,15 +121,15 @@ export function Scene08_Plans() {
 
               {/* Price */}
               <div className="text-center mb-1">
-                <span className="font-black text-3xl" style={{ color: accent }}>
+                <span className="font-black text-3xl font-mono" style={{ color: accent }}>
                   {plan.price}
                 </span>
-                <span className="text-white/60 text-sm font-medium ml-1">{plan.currency}</span>
+                <span className="text-white/70 text-sm font-medium ml-1">{plan.currency}</span>
               </div>
-              <div className="text-white/30 text-[10px] text-center mb-3">{plan.period}</div>
+              <div className="text-white/40 text-[10px] text-center mb-3 uppercase tracking-wider">{plan.period}</div>
 
               {/* Subtitle */}
-              <p className="text-white/50 text-[11px] text-center leading-snug mb-3">{plan.subtitle}</p>
+              <p className="text-white/60 text-[11px] text-center leading-snug mb-3">{plan.subtitle}</p>
 
               {/* Expanded features */}
               {isActive && (
@@ -134,7 +137,7 @@ export function Scene08_Plans() {
                   {plan.features.map((f, fi) => (
                     <div key={fi} className="flex items-start gap-2">
                       <CheckCircle size={12} style={{ color: accent, flexShrink: 0, marginTop: 2 }} />
-                      <span className="text-white/60 text-[11px] leading-snug">{f}</span>
+                      <span className="text-white/70 text-[11px] leading-snug">{f}</span>
                     </div>
                   ))}
                   <a
@@ -153,8 +156,8 @@ export function Scene08_Plans() {
 
               {!isActive && (
                 <div
-                  className="text-[10px] text-center uppercase tracking-widest mt-1"
-                  style={{ color: `${accent}80` }}
+                  className="text-[10px] text-center uppercase tracking-widest mt-1 font-semibold"
+                  style={{ color: `${accent}` }}
                 >
                   Ver detalles
                 </div>

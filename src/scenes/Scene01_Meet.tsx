@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ArrowRight } from 'lucide-react';
-import { GymCanvas } from '../components/3d/GymCanvas';
 import { usePresentation } from '../engine/usePresentation';
 
 export function Scene01_Meet() {
@@ -13,19 +12,19 @@ export function Scene01_Meet() {
     const els = contentRef.current.querySelectorAll('.anim-el');
     gsap.fromTo(
       els,
-      { x: -60, opacity: 0 },
-      { x: 0, opacity: 1, duration: 0.8, stagger: 0.12, ease: 'power3.out', delay: 0.1 }
+      { x: -50, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.8, stagger: 0.12, ease: 'power3.out', delay: 0.15 }
     );
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen flex overflow-hidden bg-[#050608]">
-      {/* Background subtle gradient */}
+    <div className="relative w-full min-h-screen flex overflow-hidden">
+      {/* Readability gradient for text on left side */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0,102,255,0.07) 0%, rgba(139,92,246,0.04) 50%, transparent 70%)',
+            'linear-gradient(to right, rgba(5,6,8,0.92) 0%, rgba(5,6,8,0.8) 45%, rgba(5,6,8,0.2) 75%, transparent 100%)',
         }}
       />
 
@@ -51,7 +50,7 @@ export function Scene01_Meet() {
         </h1>
 
         {/* Body */}
-        <p className="anim-el text-white/55 text-lg font-light leading-relaxed max-w-sm mb-10">
+        <p className="anim-el text-white/60 text-lg font-light leading-relaxed max-w-sm mb-10">
           Entrenamiento personalizado, seguimiento real y progreso sostenible.
         </p>
 
@@ -70,7 +69,7 @@ export function Scene01_Meet() {
 
           <button
             onClick={() => goTo(1)}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-white/70 font-medium text-sm uppercase tracking-[0.2em] border border-white/15 hover:border-[#00d2ff]/50 hover:text-white transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-white/70 font-medium text-sm uppercase tracking-[0.2em] border border-white/15 hover:border-[#00d2ff]/50 hover:text-white transition-all duration-300 glass-panel"
           >
             Conocerme
           </button>
@@ -84,20 +83,6 @@ export function Scene01_Meet() {
           <span className="text-white/30 text-xs tracking-widest uppercase">Meet Kevin</span>
         </div>
       </div>
-
-      {/* RIGHT — 3D character scene */}
-      <div className="absolute right-0 top-0 w-full md:w-1/2 h-full opacity-90 pointer-events-none">
-        <GymCanvas sceneType="hero" className="w-full h-full" />
-      </div>
-
-      {/* Mobile canvas overlay (below md) */}
-      <div
-        className="absolute inset-0 md:hidden pointer-events-none"
-        style={{
-          background: 'linear-gradient(to right, #050608 40%, transparent 100%)',
-          zIndex: 5,
-        }}
-      />
     </div>
   );
 }

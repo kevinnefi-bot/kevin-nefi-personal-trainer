@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { HelpCircle, Dumbbell, UtensilsCrossed, Calendar, ArrowRight } from 'lucide-react';
-import { GymCanvas } from '../components/3d/GymCanvas';
 import { usePresentation } from '../engine/usePresentation';
 
 const PROBLEMS = [
@@ -46,39 +45,34 @@ export function Scene03_Problem() {
       gsap.fromTo(
         cards,
         { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out', delay: 0.3 }
+        { y: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out', delay: 0.25 }
       );
     }
     if (bottomRef.current) {
-      gsap.fromTo(bottomRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.7 });
+      gsap.fromTo(bottomRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.6 });
     }
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col justify-center overflow-hidden bg-[#050608] px-6 md:px-16 lg:px-24 py-20 pb-28">
-      {/* Violet tint bg */}
+    <div className="relative w-full min-h-screen flex flex-col justify-center overflow-hidden px-6 md:px-16 lg:px-24 py-20 pb-28">
+      {/* Readability backdrop */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(139,92,246,0.08) 0%, transparent 70%)',
+            'radial-gradient(ellipse 90% 70% at 30% 50%, rgba(5,6,8,0.92) 0%, rgba(5,6,8,0.75) 60%, rgba(5,6,8,0.2) 100%)',
         }}
       />
 
-      {/* Ambient 3D scene */}
-      <div className="absolute right-0 top-0 w-1/3 h-full pointer-events-none opacity-25">
-        <GymCanvas sceneType="problem" className="w-full h-full" />
-      </div>
-
       {/* TOP title */}
-      <div ref={topRef} className="relative z-10 mb-10">
+      <div ref={topRef} className="relative z-10 mb-8 max-w-2xl">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-px bg-[#8b5cf6]" />
           <span className="text-xs font-semibold tracking-[0.3em] uppercase text-[#8b5cf6]">
             03 / 09 · El Problema
           </span>
         </div>
-        <h2 className="font-black uppercase text-4xl md:text-5xl lg:text-6xl text-white leading-[0.9] max-w-2xl">
+        <h2 className="font-black uppercase text-4xl md:text-5xl lg:text-6xl text-white leading-[0.9]">
           ¿NO SABES POR DÓNDE{' '}
           <span className="text-gradient-violet">EMPEZAR?</span>
         </h2>
@@ -87,19 +81,19 @@ export function Scene03_Problem() {
       {/* Problem cards grid */}
       <div
         ref={gridRef}
-        className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 max-w-3xl"
+        className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 max-w-2xl"
       >
         {PROBLEMS.map((item, i) => {
           const Icon = item.icon;
           return (
             <div
               key={i}
-              className="problem-card glass-panel rounded-2xl p-5 border border-white/5 hover:border-[#00d2ff]/20 transition-all duration-300 group"
+              className="problem-card glass-panel rounded-2xl p-5 border border-white/10 hover:border-[#00d2ff]/30 transition-all duration-300 group"
             >
               <div className="flex items-start gap-4">
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
-                  style={{ background: `${item.color}15` }}
+                  style={{ background: `${item.color}20`, border: `1px solid ${item.color}40` }}
                 >
                   <Icon size={18} style={{ color: item.color }} />
                 </div>
@@ -107,7 +101,7 @@ export function Scene03_Problem() {
                   <p className="font-semibold text-white text-sm leading-snug mb-1.5">
                     {item.problem}
                   </p>
-                  <p className="text-white/40 text-xs italic leading-relaxed">{item.hint}</p>
+                  <p className="text-white/50 text-xs italic leading-relaxed">{item.hint}</p>
                 </div>
               </div>
             </div>
@@ -116,12 +110,12 @@ export function Scene03_Problem() {
       </div>
 
       {/* Transform moment */}
-      <div ref={bottomRef} className="relative z-10 max-w-3xl">
-        <div className="h-px bg-gradient-to-r from-transparent via-[#00d2ff]/40 to-transparent mb-8" />
-        <p className="font-black uppercase text-3xl md:text-4xl lg:text-5xl text-gradient-electric leading-tight mb-3">
+      <div ref={bottomRef} className="relative z-10 max-w-2xl">
+        <div className="h-px bg-gradient-to-r from-[#00d2ff]/60 via-[#8b5cf6]/40 to-transparent mb-6" />
+        <p className="font-black uppercase text-2xl md:text-4xl lg:text-5xl text-gradient-electric leading-tight mb-2">
           NO TIENE POR QUÉ SER COMPLICADO.
         </p>
-        <p className="text-white/50 text-base mb-7">Kevin lo hace simple.</p>
+        <p className="text-white/60 text-base mb-6">Kevin estructura y simplifica tu camino.</p>
         <button
           onClick={goNext}
           className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-[#00d2ff] hover:text-white transition-colors group w-fit"

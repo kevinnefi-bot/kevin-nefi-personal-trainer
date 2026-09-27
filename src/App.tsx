@@ -4,7 +4,7 @@ import { PresentationProvider, usePresentation } from './engine/usePresentation'
 import { ChapterNav } from './components/ui/ChapterNav';
 import { TransitionOverlay } from './components/ui/TransitionOverlay';
 import { CustomCursor } from './components/layout/CustomCursor';
-import { ScrollProgress } from './components/layout/ScrollProgress';
+import { PresentationWorld3D } from './components/3d/PresentationWorld3D';
 import { Scene01_Meet } from './scenes/Scene01_Meet';
 import { Scene02_Story } from './scenes/Scene02_Story';
 import { Scene03_Problem } from './scenes/Scene03_Problem';
@@ -38,7 +38,7 @@ function PresentationStage() {
       gsap.fromTo(
         stageRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.35, ease: 'power2.out', delay: 0.32 }
+        { opacity: 1, duration: 0.4, ease: 'power2.out', delay: 0.25 }
       );
       prevScene.current = currentScene;
     }
@@ -48,10 +48,16 @@ function PresentationStage() {
 
   return (
     <>
+      {/* Persistent Continuous 3D World Canvas behind all scenes */}
+      <PresentationWorld3D
+        currentScene={currentScene}
+        isTransitioning={isTransitioning}
+      />
+
       {/* Full-screen scene container */}
       <div
         ref={stageRef}
-        className="w-full min-h-screen"
+        className="w-full min-h-screen relative z-10"
         style={{ paddingBottom: '72px' }} // space for ChapterNav
       >
         {ActiveScene ? <ActiveScene /> : null}
@@ -68,12 +74,8 @@ function PresentationStage() {
 }
 
 function AppInner() {
-  // Disable body scroll — this is a presentation, not a scroll page
   useEffect(() => {
-    // Respect reduced motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Hide default scrollbar — scenes fill viewport
     document.body.style.overflow = prefersReducedMotion ? 'auto' : 'hidden';
 
     return () => {
@@ -89,7 +91,7 @@ function AppInner() {
       <CustomCursor />
 
       {/* Main presentation stage */}
-      <div className="w-full h-full overflow-y-auto overflow-x-hidden" style={{ scrollbarWidth: 'none' }}>
+      <div className="w-full h-full overflow-y-auto overflow-x-hidden relative" style={{ scrollbarWidth: 'none' }}>
         <PresentationStage />
       </div>
 
