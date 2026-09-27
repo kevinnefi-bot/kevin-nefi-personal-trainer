@@ -14,9 +14,10 @@ export const GymParticleField: React.FC<GymParticleFieldProps> = ({ count = 120 
     const col = new Float32Array(count * 3);
     const sca = new Float32Array(count);
 
-    const crimson = new THREE.Color('#ff003c');
-    const silver = new THREE.Color('#a1a1b5');
-    const darkSteel = new THREE.Color('#333344');
+    const electricBlue = new THREE.Color('#00d2ff');
+    const royalBlue = new THREE.Color('#0066ff');
+    const violet = new THREE.Color('#8b5cf6');
+    const steel = new THREE.Color('#475569');
 
     for (let i = 0; i < count; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 20;
@@ -24,11 +25,13 @@ export const GymParticleField: React.FC<GymParticleFieldProps> = ({ count = 120 
       pos[i * 3 + 2] = (Math.random() - 0.5) * 15;
 
       const randomColor = Math.random();
-      let chosenColor = silver;
+      let chosenColor = steel;
       if (randomColor > 0.75) {
-        chosenColor = crimson;
-      } else if (randomColor > 0.4) {
-        chosenColor = darkSteel;
+        chosenColor = electricBlue;
+      } else if (randomColor > 0.5) {
+        chosenColor = violet;
+      } else if (randomColor > 0.3) {
+        chosenColor = royalBlue;
       }
 
       col[i * 3] = chosenColor.r;
@@ -41,9 +44,9 @@ export const GymParticleField: React.FC<GymParticleFieldProps> = ({ count = 120 
     return [pos, col, sca];
   }, [count]);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (!pointsRef.current) return;
-    pointsRef.current.rotation.y += delta * 0.03;
+    pointsRef.current.rotation.y += delta * 0.025;
     pointsRef.current.rotation.x += delta * 0.01;
   });
 
@@ -60,10 +63,10 @@ export const GymParticleField: React.FC<GymParticleFieldProps> = ({ count = 120 
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.12}
+        size={0.14}
         vertexColors
         transparent
-        opacity={0.6}
+        opacity={0.65}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
       />

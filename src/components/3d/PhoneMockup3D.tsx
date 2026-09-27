@@ -30,19 +30,19 @@ export const PhoneMockup3D: React.FC<PhoneMockup3DProps> = ({
       <mesh castShadow receiveShadow>
         <boxGeometry args={[1.5, 3.0, 0.18]} />
         <meshStandardMaterial
-          color="#0c0c12"
+          color="#060911"
           roughness={0.2}
-          metalness={0.9}
+          metalness={0.92}
         />
       </mesh>
 
-      {/* Crimson Glow Frame Edge */}
+      {/* Electric Blue Glow Frame Edge */}
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[1.54, 3.04, 0.12]} />
         <meshStandardMaterial
-          color="#ff003c"
-          emissive="#ff003c"
-          emissiveIntensity={0.5}
+          color="#0066ff"
+          emissive="#0066ff"
+          emissiveIntensity={0.6}
           roughness={0.1}
         />
       </mesh>
@@ -50,7 +50,7 @@ export const PhoneMockup3D: React.FC<PhoneMockup3DProps> = ({
       {/* Front Screen Display */}
       <mesh position={[0, 0, 0.096]}>
         <planeGeometry args={[1.4, 2.9]} />
-        <meshBasicMaterial color="#08080c" />
+        <meshBasicMaterial color="#05070d" />
       </mesh>
 
       {/* UI Elements Simulated inside Screen */}
@@ -58,45 +58,45 @@ export const PhoneMockup3D: React.FC<PhoneMockup3DProps> = ({
         {/* Header Bar */}
         <mesh position={[0, 1.25, 0]}>
           <planeGeometry args={[1.2, 0.2]} />
-          <meshBasicMaterial color="#1a1a24" />
+          <meshBasicMaterial color="#0e1526" />
         </mesh>
         
         {/* App Title Banner "MYPROGRESS" */}
         <mesh position={[-0.2, 1.0, 0]}>
           <planeGeometry args={[0.7, 0.12]} />
-          <meshBasicMaterial color="#ff003c" />
+          <meshBasicMaterial color="#00d2ff" />
         </mesh>
 
         {/* Progress Circular Widget */}
         <mesh position={[0, 0.4, 0]}>
           <ringGeometry args={[0.3, 0.38, 32]} />
-          <meshBasicMaterial color="#ff003c" />
+          <meshBasicMaterial color="#8b5cf6" />
         </mesh>
         <mesh position={[0, 0.4, 0]}>
           <circleGeometry args={[0.28, 32]} />
-          <meshBasicMaterial color="#12121a" />
+          <meshBasicMaterial color="#0a0f1d" />
         </mesh>
 
         {/* Stat Cards */}
         <mesh position={[-0.32, -0.3, 0]}>
           <planeGeometry args={[0.55, 0.6]} />
-          <meshBasicMaterial color="#161622" />
+          <meshBasicMaterial color="#0c1222" />
         </mesh>
         <mesh position={[0.32, -0.3, 0]}>
           <planeGeometry args={[0.55, 0.6]} />
-          <meshBasicMaterial color="#161622" />
+          <meshBasicMaterial color="#0c1222" />
         </mesh>
 
         {/* Workout Plan Bar */}
         <mesh position={[0, -0.9, 0]}>
           <planeGeometry args={[1.2, 0.4]} />
-          <meshBasicMaterial color="#1e1b26" />
+          <meshBasicMaterial color="#10182f" />
         </mesh>
 
         {/* Action Button */}
         <mesh position={[0, -1.25, 0]}>
           <planeGeometry args={[1.2, 0.18]} />
-          <meshBasicMaterial color="#ff003c" />
+          <meshBasicMaterial color="#0066ff" />
         </mesh>
       </group>
 

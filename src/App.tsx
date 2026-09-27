@@ -16,7 +16,7 @@ import { ContactSection } from './sections/ContactSection';
 
 export default function App() {
   useEffect(() => {
-    // Check if user prefers reduced motion
+    // Respect reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
@@ -25,7 +25,7 @@ export default function App() {
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
-      smoothWheel: true
+      smoothWheel: true,
     });
 
     function raf(time: number) {
@@ -41,20 +41,37 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#070709] text-white selection:bg-[#ff003c] selection:text-white relative">
+    <div className="min-h-screen bg-[#050608] text-white selection:bg-[#00d2ff] selection:text-[#050608] relative">
       <CustomCursor />
       <ScrollProgress />
       <Navbar />
 
       <main>
+        {/* 1. Hero — first impression, 3D digital character */}
         <HeroSection />
+
+        {/* 2. Philosophy — cinematic statement of belief */}
         <PhilosophySection />
+
+        {/* 3. Problem — why people struggle (pain points) */}
         <ProblemSection />
+
+        {/* 4. Method — Kevin's training system */}
         <MethodSection />
+
+        {/* 5. Services — what Kevin offers */}
         <ServicesSection />
+
+        {/* 6. MyProgress — app feature showcase */}
         <MyProgressSection />
+
+        {/* 7. Values — who Kevin is */}
         <ValuesSection />
+
+        {/* 8. Pricing — transparent plans */}
         <PricingSection />
+
+        {/* 9. Contact — final CTA */}
         <ContactSection />
       </main>
 

@@ -1,98 +1,79 @@
 import React from 'react';
-import { CheckCircle2, XCircle } from 'lucide-react';
 import { GymCanvas } from '../components/3d/GymCanvas';
+import { ArrowRight } from 'lucide-react';
 
 export const ProblemSection: React.FC = () => {
+  const pillars = [
+    { title: "EVALUAR", desc: "Comprender tu punto de inicio, movilidad e historial." },
+    { title: "PLANIFICAR", desc: "Diseñar una ruta realista adaptada a tus horarios." },
+    { title: "ENTRENAR", desc: "Ejecutar técnica impecable con intensidad progresiva." },
+    { title: "SEGUIR", desc: "Monitorear cargas y evolución constante." },
+    { title: "AJUSTAR", desc: "Optimizar variables cuando el cuerpo se adapta." },
+    { title: "PROGRESAR", desc: "Resultados visibles y fuerza acumulada en el tiempo." }
+  ];
+
   return (
-    <section className="relative py-28 bg-[#09090d] border-t border-white/5 overflow-hidden">
+    <section id="problem" className="relative py-32 bg-[#050608] border-t border-white/5 overflow-hidden">
       {/* 3D Background Canvas */}
-      <div className="absolute inset-0 pointer-events-none opacity-40">
+      <div className="absolute inset-0 pointer-events-none opacity-45">
         <GymCanvas sceneType="problem" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* Atmospheric Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-r from-[#0066ff]/15 to-[#8b5cf6]/10 blur-[160px] pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs uppercase font-mono font-bold tracking-widest text-[#ff003c] bg-[#ff003c]/10 border border-[#ff003c]/20 px-3 py-1 rounded-full">
-            El Problema Común
+        <div className="text-center max-w-4xl mx-auto mb-20">
+          <span className="text-xs uppercase font-mono font-bold tracking-[0.25em] text-[#00d2ff] bg-[#0066ff]/10 border border-[#0066ff]/30 px-4 py-1.5 rounded-full inline-block mb-6">
+            La Realidad del Fitness
           </span>
-          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-white tracking-tight mt-4 mb-6">
-            IT DOESN'T HAVE TO BE <br />
-            <span className="text-gradient-crimson">COMPLICATED.</span>
+
+          <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase text-white tracking-tight leading-[1.0] mb-6">
+            NO TIENE POR QUÉ <br />
+            <span className="text-gradient-electric">SER COMPLICADO.</span>
           </h2>
-          <p className="text-base text-[#a1a1b5] leading-relaxed">
-            El mundo del fitness se ha llenado de desinformación, mitos y dietas extremas. Muchas personas abandonan porque creen que transformar su físico requiere una vida imposible.
+
+          <p className="text-lg sm:text-xl text-[#94a3b8] font-light max-w-2xl mx-auto leading-relaxed">
+            "Entrenar no debería sentirse como seguir una fórmula imposible."
           </p>
         </div>
 
-        {/* Comparison Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-          
-          {/* Myths / Overcomplicated side */}
-          <div className="p-8 rounded-3xl bg-[#0e0e14] border border-red-900/30 relative overflow-hidden group">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-red-950/50 border border-red-500/30 flex items-center justify-center">
-                <XCircle className="w-5 h-5 text-red-500" />
+        {/* Minimalist Typography Progression */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {pillars.map((item, idx) => (
+            <div
+              key={item.title}
+              className="group p-8 rounded-3xl bg-[#080c16]/80 border border-white/10 hover:border-[#0066ff]/60 hover:bg-[#0c1222] transition-all duration-300 relative overflow-hidden backdrop-blur-md"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <span className="font-mono text-xs text-[#00d2ff] font-bold">
+                  0{idx + 1}
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#8b5cf6] opacity-0 group-hover:opacity-100 transition-opacity shadow-[0_0_8px_#8b5cf6]" />
               </div>
-              <h3 className="font-display font-bold text-xl text-white">Lo que te han hecho creer</h3>
-            </div>
 
-            <ul className="space-y-4 text-sm text-[#a1a1b5]">
-              <li className="flex items-start gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
-                <span>Rutinas caóticas de 2 horas diarias sin planificación clara.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
-                <span>Dietas extremas, restrictivas e insostenibles en el tiempo.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
-                <span>Falsas promesas de "cambios en 30 días" sin hábitos reales.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
-                <span>Sensación constante de frustración y falta de dirección.</span>
-              </li>
-            </ul>
-          </div>
+              <h3 className="font-display font-black text-2xl text-white group-hover:text-[#00d2ff] transition-colors mb-2 tracking-wide">
+                {item.title}
+              </h3>
 
-          {/* Kevin's Realist Approach */}
-          <div className="p-8 rounded-3xl bg-gradient-to-b from-[#14141d] to-[#0d0d14] border border-[#ff003c]/40 relative overflow-hidden shadow-[0_0_40px_rgba(255,0,60,0.15)] group">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-[#ff003c]/20 border border-[#ff003c]/50 flex items-center justify-center">
-                <CheckCircle2 className="w-5 h-5 text-[#ff003c]" />
+              <p className="text-sm text-[#94a3b8] leading-relaxed">
+                {item.desc}
+              </p>
+
+              <div className="mt-6 pt-4 border-t border-white/5 flex items-center text-xs font-semibold text-[#0066ff] group-hover:text-[#00d2ff] transition-colors">
+                <span>Estrategia activa</span>
+                <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-1 transition-transform" />
               </div>
-              <h3 className="font-display font-bold text-xl text-white">El enfoque de Kevin Nefi</h3>
             </div>
+          ))}
+        </div>
 
-            <ul className="space-y-4 text-sm text-white">
-              <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#ff003c] mt-1.5 shrink-0 shadow-[0_0_8px_#ff003c]" />
-                <span><strong>Entrenamiento eficiente:</strong> Ejercicios clave adaptados a tu tiempo y condición.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#ff003c] mt-1.5 shrink-0 shadow-[0_0_8px_#ff003c]" />
-                <span><strong>Nutrición realista:</strong> Orientación práctica para construir hábitos diarios.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#ff003c] mt-1.5 shrink-0 shadow-[0_0_8px_#ff003c]" />
-                <span><strong>Seguimiento constante:</strong> Medir peso, cargas y avance con la app MyProgress.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#ff003c] mt-1.5 shrink-0 shadow-[0_0_8px_#ff003c]" />
-                <span><strong>Consistencia sobre perfección:</strong> Avanzar día con día sin presiones falsas.</span>
-              </li>
-            </ul>
-
-            <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between">
-              <span className="font-display font-bold text-xs uppercase tracking-widest text-[#ff003c]">
-                MENOS CONFUSIÓN. MÁS DIRECCIÓN.
-              </span>
-            </div>
-          </div>
-
+        <div className="mt-16 text-center">
+          <p className="text-xs uppercase font-mono tracking-widest text-[#64748b]">
+            MENOS CONFUSIÓN • MÁS DIRECCIÓN • RESULTADOS REALES
+          </p>
         </div>
 
       </div>

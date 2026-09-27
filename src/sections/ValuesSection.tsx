@@ -1,72 +1,112 @@
-import React from 'react';
-import { KEVIN_DATA } from '../data/kevinData';
-import { ShieldCheck, Zap, TrendingUp, Target, Heart, Sliders } from 'lucide-react';
-
-const iconMap: Record<string, React.ElementType> = {
-  ShieldCheck,
-  Zap,
-  TrendingUp,
-  Target,
-  Heart,
-  Sliders
-};
+import React, { useState } from 'react';
 
 export const ValuesSection: React.FC = () => {
+  const [activeValue, setActiveValue] = useState(0);
+
+  const values = [
+    {
+      word: "HONESTY",
+      spanish: "HONESTIDAD",
+      desc: "Sin fórmulas mágicas ni promesas vacías. Resultados tangibles basados en trabajo duro y real.",
+      color: "#00d2ff"
+    },
+    {
+      word: "DISCIPLINE",
+      spanish: "DISCIPLINA",
+      desc: "El compromiso de presentarte y dar lo mejor de ti, especialmente los días en que no tienes ganas.",
+      color: "#0066ff"
+    },
+    {
+      word: "CONSISTENCY",
+      spanish: "CONSISTENCIA",
+      desc: "No se trata de entrenar 4 horas un día, sino de sostener el esfuerzo durante semanas y meses.",
+      color: "#38bdf8"
+    },
+    {
+      word: "COMMITMENT",
+      spanish: "COMPROMISO",
+      desc: "Tu dedicación alineada con mi guía técnica constante en cada paso del camino.",
+      color: "#818cf8"
+    },
+    {
+      word: "RESPECT",
+      spanish: "RESPETO",
+      desc: "Respetamos tus tiempos, tu punto de partida y tu ritmo de evolución sin comparaciones externas.",
+      color: "#a855f7"
+    },
+    {
+      word: "PERSONALIZATION",
+      spanish: "PERSONALIZACIÓN",
+      desc: "Cada persona es un mundo. Diseñamos el plan exclusivamente para tu cuerpo y tus objetivos.",
+      color: "#c084fc"
+    }
+  ];
+
   return (
-    <section className="relative py-28 bg-[#070709] border-t border-white/5 overflow-hidden">
+    <section className="relative py-36 bg-[#050608] border-t border-white/5 overflow-hidden">
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* Dynamic Background Backlight responding to active value */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] blur-[170px] pointer-events-none transition-all duration-700"
+        style={{ backgroundColor: `${values[activeValue].color}18` }}
+      />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-xs uppercase font-mono font-bold tracking-widest text-[#ff003c] bg-[#ff003c]/10 border border-[#ff003c]/20 px-3 py-1 rounded-full">
-            Valores de Marca
+          <span className="text-xs uppercase font-mono font-bold tracking-[0.25em] text-[#00d2ff] bg-[#0066ff]/10 border border-[#0066ff]/30 px-4 py-1.5 rounded-full inline-block mb-4">
+            Pilares Fundamentales
           </span>
-          <h2 className="font-display text-3xl sm:text-5xl font-black uppercase text-white tracking-tight mt-4 mb-4">
-            PRINCIPIOS <span className="text-gradient-crimson">INNEGOCIABLES.</span>
+          <h2 className="font-display text-4xl sm:text-6xl font-black uppercase text-white tracking-tight leading-none">
+            CORE <span className="text-gradient-electric">VALUES.</span>
           </h2>
-          <p className="text-sm text-[#a1a1b5] leading-relaxed">
-            Los 6 pilares que guían la relación de entrenamiento entre Kevin y cada uno de sus clientes.
-          </p>
         </div>
 
-        {/* Values Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {KEVIN_DATA.values.map((item, idx) => {
-            const Icon = iconMap[item.iconName] || ShieldCheck;
+        {/* Vertical Interactive Typography Experience */}
+        <div className="flex flex-col items-center justify-center space-y-8 sm:space-y-10">
+          {values.map((v, idx) => {
+            const isActive = activeValue === idx;
 
             return (
               <div
-                key={item.title}
-                className="group relative rounded-3xl bg-[#0c0c12] border border-white/10 p-8 hover:border-[#ff003c]/50 hover:bg-[#12121a] transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                key={v.word}
+                onMouseEnter={() => setActiveValue(idx)}
+                onClick={() => setActiveValue(idx)}
+                className={`cursor-pointer transition-all duration-500 text-center select-none group w-full ${
+                  isActive
+                    ? 'scale-105 sm:scale-115 opacity-100 blur-none'
+                    : 'scale-90 sm:scale-95 opacity-30 hover:opacity-70 blur-[1px]'
+                }`}
               >
-                {/* Background Number Accent */}
-                <span className="absolute top-4 right-6 font-display font-black text-5xl text-white/5 group-hover:text-[#ff003c]/15 transition-colors">
-                  0{idx + 1}
-                </span>
-
-                <div>
-                  <div className="w-12 h-12 rounded-2xl bg-[#181824] border border-white/10 group-hover:border-[#ff003c] group-hover:bg-[#ff003c] text-white flex items-center justify-center mb-6 transition-all duration-300">
-                    <Icon className="w-6 h-6" />
-                  </div>
-
-                  <span className="text-[11px] font-mono uppercase tracking-widest text-[#ff003c] block mb-1">
-                    {item.subtitle}
+                <div className="flex items-center justify-center gap-3">
+                  <span className={`font-mono text-xs font-bold transition-colors ${isActive ? 'text-[#00d2ff]' : 'text-transparent'}`}>
+                    0{idx + 1}
                   </span>
-
-                  <h3 className="font-display font-bold text-2xl text-white mb-3">
-                    {item.title}
+                  
+                  <h3
+                    className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight transition-all duration-500"
+                    style={{
+                      color: isActive ? '#ffffff' : '#64748b',
+                      textShadow: isActive ? `0 0 40px ${v.color}88` : 'none',
+                      letterSpacing: isActive ? '0.02em' : '-0.02em'
+                    }}
+                  >
+                    {v.word}
                   </h3>
-
-                  <p className="text-sm text-[#a1a1b5] leading-relaxed">
-                    {item.description}
-                  </p>
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-[#71717a]">
-                  <span>Pilar 0{idx + 1}</span>
-                  <span className="w-2 h-2 rounded-full bg-[#ff003c] opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
+                {/* Subtitle & description expanded on active */}
+                {isActive && (
+                  <div className="mt-3 max-w-md mx-auto animate-fadeIn">
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#00d2ff] block mb-1">
+                      {v.spanish}
+                    </span>
+                    <p className="text-xs sm:text-sm text-[#94a3b8] font-light leading-relaxed">
+                      {v.desc}
+                    </p>
+                  </div>
+                )}
               </div>
             );
           })}
