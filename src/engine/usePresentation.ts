@@ -17,12 +17,14 @@ export interface PresentationState {
   goNext: () => void;
   goPrev: () => void;
   goTo: (n: number) => void;
+  loopToStart: () => void;
   transitionType: string;
 }
 
 const PresentationContext = createContext<PresentationState | null>(null);
 
-const TRANSITION_DURATION_MS = 700;
+const TRANSITION_DURATION_MS = 650;
+const WHEEL_COOLDOWN_MS = 900;
 
 interface PresentationProviderProps {
   children: ReactNode;
@@ -33,6 +35,7 @@ export function PresentationProvider({ children }: PresentationProviderProps) {
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
   const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastWheelTime = useRef<number>(0);
   const pendingScene = useRef<number | null>(null);
 
   const triggerTransition = useCallback(
@@ -60,12 +63,23 @@ export function PresentationProvider({ children }: PresentationProviderProps) {
   );
 
   const goNext = useCallback(() => {
-    triggerTransition(currentScene + 1, 'forward');
+    if (currentScene >= TOTAL_SCENES - 1) {
+      // Loop seamlessly back to start
+      triggerTransition(0, 'forward');
+    } else {
+      triggerTransition(currentScene + 1, 'forward');
+    }
   }, [currentScene, triggerTransition]);
 
   const goPrev = useCallback(() => {
-    triggerTransition(currentScene - 1, 'backward');
+    if (currentScene > 0) {
+      triggerTransition(currentScene - 1, 'backward');
+    }
   }, [currentScene, triggerTransition]);
+
+  const loopToStart = useCallback(() => {
+    triggerTransition(0, 'forward');
+  }, [triggerTransition]);
 
   const goTo = useCallback(
     (n: number) => {
@@ -78,16 +92,36 @@ export function PresentationProvider({ children }: PresentationProviderProps) {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') {
         e.preventDefault();
         goNext();
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
         e.preventDefault();
         goPrev();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [goNext, goPrev]);
+
+  // Smooth wheel navigation
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      const now = Date.now();
+      if (now - lastWheelTime.current < WHEEL_COOLDOWN_MS) return;
+
+      if (Math.abs(e.deltaY) > 35) {
+        lastWheelTime.current = now;
+        if (e.deltaY > 0) {
+          goNext();
+        } else {
+          goPrev();
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    return () => window.removeEventListener('wheel', handleWheel);
   }, [goNext, goPrev]);
 
   // Touch swipe navigation
@@ -103,8 +137,7 @@ export function PresentationProvider({ children }: PresentationProviderProps) {
     const handleTouchEnd = (e: TouchEvent) => {
       const deltaX = touchStartX - e.changedTouches[0].clientX;
       const deltaY = touchStartY - e.changedTouches[0].clientY;
-      // Only trigger if horizontal swipe is dominant
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 45) {
         deltaX > 0 ? goNext() : goPrev();
       }
     };
@@ -133,6 +166,7 @@ export function PresentationProvider({ children }: PresentationProviderProps) {
     goNext,
     goPrev,
     goTo,
+    loopToStart,
     transitionType,
   };
 

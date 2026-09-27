@@ -71,23 +71,38 @@ export function Scene09_Final() {
           Una sola conversación puede cambiar todo.
         </p>
 
-        {/* Primary WhatsApp CTA */}
-        <a
-          href={KEVIN_DATA.whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="anim-el group relative inline-flex items-center gap-3 px-10 py-5 rounded-full text-white font-bold text-base uppercase tracking-widest overflow-hidden mb-6 shadow-2xl"
-          style={{
-            background: 'linear-gradient(135deg, #00d2ff 0%, #0066ff 50%, #8b5cf6 100%)',
-          }}
-        >
-          <span
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-            style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%)' }}
-          />
-          <MessageCircle size={20} className="relative z-10" />
-          <span className="relative z-10">Empezar mi Proceso</span>
-        </a>
+        {/* Action Buttons */}
+        <div className="anim-el flex flex-wrap items-center justify-center gap-4 mb-6">
+          {/* Primary WhatsApp CTA */}
+          <a
+            href={KEVIN_DATA.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative inline-flex items-center gap-3 px-9 py-4 rounded-full text-white font-bold text-base uppercase tracking-widest overflow-hidden shadow-2xl"
+            style={{
+              background: 'linear-gradient(135deg, #00d2ff 0%, #0066ff 50%, #8b5cf6 100%)',
+            }}
+          >
+            <span
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%)' }}
+            />
+            <MessageCircle size={20} className="relative z-10" />
+            <span className="relative z-10">Empezar mi Proceso</span>
+          </a>
+
+          {/* Seamless 3D Loop Button */}
+          <button
+            onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))}
+            className="inline-flex items-center gap-2.5 px-6 py-4 rounded-full text-white/70 hover:text-white font-semibold text-sm uppercase tracking-widest border border-white/15 hover:border-[#00d2ff]/50 glass-panel transition-all"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#00d2ff]">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            <span>Reiniciar Recorrido</span>
+          </button>
+        </div>
 
         {/* Divider */}
         <div className="anim-el flex items-center justify-center gap-4 my-6">

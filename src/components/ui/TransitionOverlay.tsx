@@ -9,71 +9,112 @@ interface TransitionOverlayProps {
 
 export function TransitionOverlay({ isActive, type, direction }: TransitionOverlayProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
+  const flareRef = useRef<HTMLDivElement>(null);
+  const portalRingRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
     if (!overlayRef.current) return;
-    if (tlRef.current) { tlRef.current.kill(); tlRef.current = null; }
-
-    if (!isActive) {
-      gsap.set(overlayRef.current, { xPercent: direction === 'forward' ? 110 : -110, opacity: 1 });
-      return;
+    if (tlRef.current) {
+      tlRef.current.kill();
+      tlRef.current = null;
     }
 
-    const fromX = direction === 'forward' ? -110 : 110;
-    const toX   = direction === 'forward' ?  110 : -110;
+    if (!isActive) {
+      gsap.set(overlayRef.current, { opacity: 0, pointerEvents: 'none' });
+      return;
+    }
 
     const tl = gsap.timeline();
     tlRef.current = tl;
 
-    tl.fromTo(
-      overlayRef.current,
-      { xPercent: fromX, opacity: 1 },
-      { xPercent: 0, duration: 0.38, ease: 'power3.inOut' }
-    );
-    tl.to(overlayRef.current, { duration: 0.22 }); // hold
-    tl.to(overlayRef.current, { xPercent: toX, duration: 0.28, ease: 'power3.inOut' });
+    // Fast 2026 kinetic sweep with motion blur & lens flare streak
+    const fromX = direction === 'forward' ? '-100%' : '100%';
+    const toX = direction === 'forward' ? '100%' : '-100%';
 
-    if (innerRef.current) {
-      gsap.fromTo(
-        innerRef.current,
-        { rotate: 0, scale: 0.6, opacity: 0 },
-        { rotate: 360, scale: 1.2, opacity: 0.6, duration: 0.88, ease: 'power2.out' }
-      );
+    gsap.set(overlayRef.current, { opacity: 1, pointerEvents: 'auto' });
+
+    if (type === 'phone-portal') {
+      // 2026 Camera Dive Portal: circular iris zoom
+      if (portalRingRef.current) {
+        tl.fromTo(
+          portalRingRef.current,
+          { scale: 0.1, opacity: 0 },
+          { scale: 3.5, opacity: 1, duration: 0.35, ease: 'power2.in' }
+        ).to(portalRingRef.current, {
+          scale: 8.0,
+          opacity: 0,
+          duration: 0.28,
+          ease: 'power3.out',
+        });
+      }
+    } else {
+      // Shutter Light Streak Wipe
+      tl.fromTo(
+        overlayRef.current,
+        { x: fromX },
+        { x: '0%', duration: 0.28, ease: 'power3.inOut' }
+      )
+        .to(overlayRef.current, { duration: 0.08 }) // hold for frame swap
+        .to(overlayRef.current, { x: toX, duration: 0.28, ease: 'power3.inOut' });
+
+      if (flareRef.current) {
+        gsap.fromTo(
+          flareRef.current,
+          { scaleX: 0.2, opacity: 0 },
+          { scaleX: 2.5, opacity: 1, duration: 0.3, ease: 'power2.out', yoyo: true, repeat: 1 }
+        );
+      }
     }
 
-    return () => { tl.kill(); };
+    return () => {
+      tl.kill();
+    };
   }, [isActive, type, direction]);
 
   if (!isActive) return null;
 
-  const isPlate = type === 'plate-wipe';
-  const isBurst = type === 'blue-burst';
-
-  const bg = isPlate
-    ? '#050608'
-    : isBurst
-    ? 'linear-gradient(135deg, #00d2ff 0%, #0066ff 50%, #8b5cf6 100%)'
-    : 'linear-gradient(135deg, #0a1020 0%, #050608 100%)';
+  const isPortal = type === 'phone-portal';
 
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[999] flex items-center justify-center overflow-hidden"
-      style={{ background: bg, willChange: 'transform' }}
+      className="fixed inset-0 z-[999] pointer-events-none flex items-center justify-center overflow-hidden"
+      style={{
+        background: isPortal
+          ? 'radial-gradient(circle at 50% 50%, rgba(0,210,255,0.4) 0%, rgba(5,6,8,0.95) 70%)'
+          : 'linear-gradient(90deg, transparent 0%, rgba(5,6,8,0.92) 20%, rgba(5,6,8,0.98) 50%, rgba(5,6,8,0.92) 80%, transparent 100%)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+      }}
       aria-hidden="true"
     >
-      <div
-        ref={innerRef}
-        className="w-72 h-72 rounded-full"
-        style={{
-          border: `3px solid ${isPlate ? 'rgba(0,210,255,0.3)' : 'rgba(255,255,255,0.2)'}`,
-          background: isPlate
-            ? 'radial-gradient(circle at 40% 40%, rgba(0,210,255,0.12) 0%, transparent 70%)'
-            : 'radial-gradient(circle at 40% 40%, rgba(255,255,255,0.08) 0%, transparent 70%)',
-        }}
-      />
+      {/* 2026 Kinetic Light Flare Streak */}
+      {!isPortal && (
+        <div
+          ref={flareRef}
+          className="absolute inset-y-0 w-32 pointer-events-none"
+          style={{
+            left: direction === 'forward' ? '50%' : '50%',
+            transform: 'translateX(-50%)',
+            background:
+              'linear-gradient(90deg, transparent, rgba(0,210,255,0.7), rgba(139,92,246,0.7), transparent)',
+            boxShadow: '0 0 60px 20px rgba(0,210,255,0.4)',
+          }}
+        />
+      )}
+
+      {/* Portal Dive Ring */}
+      {isPortal && (
+        <div
+          ref={portalRingRef}
+          className="w-48 h-48 rounded-full border-4 border-[#00d2ff]"
+          style={{
+            boxShadow: '0 0 100px 30px rgba(0,210,255,0.6), inset 0 0 60px rgba(139,92,246,0.6)',
+            background: 'radial-gradient(circle, rgba(0,210,255,0.2) 0%, transparent 70%)',
+          }}
+        />
+      )}
     </div>
   );
 }
