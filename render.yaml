@@ -1,9 +1,13 @@
 services:
   - type: web
     name: kevin-nefi-personal-trainer
-    env: static
+    runtime: static
     buildCommand: npm run build
     staticPublishPath: ./dist
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
     routes:
       - type: rewrite
         source: /*
