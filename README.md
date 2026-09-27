@@ -1,15 +1,25 @@
 # Kevin Nefi | Personal Trainer
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/kevinnefi-bot/kevin-nefi-personal-trainer)
-
-Official website and digital fitness platform for **Kevin Nefi — Personal Trainer**.
-
-- **Live URL on Render:** [https://kevin-nefi-personal-trainer.onrender.com](https://kevin-nefi-personal-trainer.onrender.com)
-- **1-Click Render Deploy:** [Deploy to Render](https://render.com/deploy?repo=https://github.com/kevinnefi-bot/kevin-nefi-personal-trainer)
+Sitio web oficial y plataforma digital de entrenamiento para **Kevin Nefi — Personal Trainer**.
 
 ---
 
-## Brand Philosophy
+## Deployment en Render
+
+- **URL de Producción en Render:** https://kevin-nefi-personal-trainer.onrender.com
+- **Crear Servicio en Render (Static Site):**
+  - **Repository:** `https://github.com/kevinnefi-bot/kevin-nefi-personal-trainer`
+  - **Name:** `kevin-nefi-personal-trainer`
+  - **Branch:** `main`
+  - **Build Command:** `npm install && npm run build`
+  - **Publish Directory:** `dist`
+  - **Node Version:** `20.18.0` (configurado en `.node-version`)
+- **Deploy Directo vía Blueprint (1-Click):**
+  - https://dashboard.render.com/blueprint/new?repo=https://github.com/kevinnefi-bot/kevin-nefi-personal-trainer
+
+---
+
+## Filosofía de Marca
 
 > **"NO TIENE POR QUÉ SER COMPLICADO."**  
 > Tu punto de partida no define tu resultado final. Tu decisión de continuar sí.
@@ -43,4 +53,4 @@ Official website and digital fitness platform for **Kevin Nefi — Personal Trai
 - **3D Engine:** Three.js + React Three Fiber + Drei
 - **Animaciones & Smooth Scroll:** GSAP + ScrollTrigger + Lenis
 - **Estilos:** Tailwind CSS + Custom Dark Metallic & Crimson Glow System
-- **Hosting:** Render Static Web Service
+- **Hosting:** Render Static Site
