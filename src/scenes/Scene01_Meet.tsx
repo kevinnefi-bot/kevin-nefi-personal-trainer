@@ -31,7 +31,7 @@ export function Scene01_Meet() {
       {/* LEFT — Text content */}
       <div
         ref={contentRef}
-        className="relative z-10 flex flex-col justify-center px-8 md:px-16 lg:px-24 w-full md:w-1/2 py-20 pb-28"
+        className="relative z-10 pointer-events-auto flex flex-col justify-center px-8 md:px-16 lg:px-24 w-full md:w-1/2 py-20 pb-28"
       >
         {/* Eyebrow */}
         <div className="anim-el flex items-center gap-3 mb-8">

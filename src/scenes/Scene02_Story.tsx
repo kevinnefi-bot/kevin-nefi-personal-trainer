@@ -44,7 +44,7 @@ export function Scene02_Story() {
       {/* RIGHT — Story content */}
       <div
         ref={contentRef}
-        className="relative z-10 flex flex-col justify-center ml-auto w-full md:w-[58%] px-8 md:px-14 lg:px-20 py-20 pb-28"
+        className="relative z-10 pointer-events-auto flex flex-col justify-center ml-auto w-full md:w-[58%] px-8 md:px-14 lg:px-20 py-20 pb-28"
       >
         {/* Eyebrow */}
         <div className="anim-el flex items-center gap-3 mb-6">

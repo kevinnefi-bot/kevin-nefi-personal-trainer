@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState, useEffect, Suspense } from 'react';
+import React, { useMemo, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { GymParticleField } from './GymParticleField';
@@ -7,41 +7,12 @@ import { Dumbbell3D } from './Dumbbell3D';
 import { Barbell3D } from './Barbell3D';
 import { NutritionTable3D } from './NutritionTable3D';
 import { PhoneMockup3D } from './PhoneMockup3D';
-import { useTexture } from '@react-three/drei';
+import { KevinInteractiveCharacter } from './KevinInteractiveCharacter';
 
 interface PresentationWorld3DProps {
   currentScene: number; // 0 to 8
   isTransitioning?: boolean;
 }
-
-interface KevinSceneTransform {
-  position: [number, number, number];
-  scale: number;
-  rotationY: number;
-  isMuscular: boolean;
-}
-
-// Scene target setups for Kevin
-const KEVIN_SCENE_TRANSFORMS: Record<number, KevinSceneTransform> = {
-  // 0: Meet Kevin - Heroic right side
-  0: { position: [1.72, -0.28, 0], scale: 1.05, rotationY: -0.14, isMuscular: true },
-  // 1: My Story - Lean start ("Tengo 22 años y llevo alrededor de 2 años entrenando...")
-  1: { position: [-1.75, -0.25, 0.2], scale: 1.08, rotationY: 0.16, isMuscular: false },
-  // 2: The Problem - Training transition ("¿No sabes por dónde empezar?")
-  2: { position: [1.35, -0.32, 0], scale: 1.02, rotationY: -0.2, isMuscular: false },
-  // 3: My Method - Transformed aesthetic peak ("Así trabajamos - No tiene por qué ser complicado")
-  3: { position: [2.15, -0.35, -0.2], scale: 1.0, rotationY: -0.18, isMuscular: true },
-  // 4: Services - Left side framing the training options
-  4: { position: [-2.1, -0.35, -0.25], scale: 0.98, rotationY: 0.22, isMuscular: true },
-  // 5: MyProgress - Standing beside the glowing 3D phone
-  5: { position: [-1.45, -0.3, 0.1], scale: 1.04, rotationY: 0.28, isMuscular: true },
-  // 6: Values - Left side with atmospheric violet rim light
-  6: { position: [-2.2, -0.36, -0.35], scale: 0.95, rotationY: 0.18, isMuscular: true },
-  // 7: Plans - Background center observing plate pedestals
-  7: { position: [0, -0.48, -1.1], scale: 0.84, rotationY: 0, isMuscular: true },
-  // 8: Final - Center-stage, prominent, welcoming the user
-  8: { position: [0, -0.32, 0.4], scale: 1.16, rotationY: 0, isMuscular: true },
-};
 
 // 2026 Cinematic Camera Rig with handheld organic float, dolly, orbit and mouse parallax
 function CinematicCameraRig({
@@ -94,136 +65,11 @@ function CinematicCameraRig({
     camera.position.y = THREE.MathUtils.damp(camera.position.y, targetY, 3.0, delta);
     camera.position.z = THREE.MathUtils.damp(camera.position.z, targetZ, 3.0, delta);
 
-    // LookAt follows slightly towards center with mouse damping
     const lookTargetX = THREE.MathUtils.damp(0, sceneCameraTarget.x * 0.4 + parallaxX * 0.3, 2.5, delta);
     camera.lookAt(lookTargetX, 0, 0);
   });
 
   return null;
-}
-
-// Dynamic Kevin character utilizing the exact user uploaded image with aspect ratio 9:16 (2.36 x 4.2)
-function DynamicKevinCharacter({
-  currentScene,
-  isTransitioning,
-  mousePos,
-}: {
-  currentScene: number;
-  isTransitioning?: boolean;
-  mousePos: { x: number; y: number };
-}) {
-  const groupRef = useRef<THREE.Group>(null);
-
-  // Exact user image as main muscular representation
-  const muscularTexture = useTexture('/assets/kevin-character-exact.png');
-  // Slim starting image for early transformation scenes
-  const slimTexture = useTexture('/assets/kevin-slim.jpg');
-
-  const target = KEVIN_SCENE_TRANSFORMS[currentScene] ?? KEVIN_SCENE_TRANSFORMS[0];
-  const activeTexture = target.isMuscular ? muscularTexture : slimTexture;
-
-  useFrame((state, delta) => {
-    if (!groupRef.current) return;
-    const t = state.clock.getElapsedTime();
-
-    // Natural breathing / idle motion
-    const breathingOffset = Math.sin(t * 1.6) * 0.035;
-
-    // Walking stride bobbing when actively transitioning or moving
-    const walkingBob = isTransitioning ? Math.sin(t * 9.5) * 0.065 : 0;
-
-    // Smoothly interpolate position towards target scene coordinates
-    groupRef.current.position.x = THREE.MathUtils.damp(
-      groupRef.current.position.x,
-      target.position[0],
-      3.0,
-      delta
-    );
-    groupRef.current.position.y = THREE.MathUtils.damp(
-      groupRef.current.position.y,
-      target.position[1] + breathingOffset + walkingBob,
-      3.0,
-      delta
-    );
-    groupRef.current.position.z = THREE.MathUtils.damp(
-      groupRef.current.position.z,
-      target.position[2],
-      3.0,
-      delta
-    );
-
-    // Smooth scale interpolation
-    const curScale = groupRef.current.scale.x;
-    const nextScale = THREE.MathUtils.damp(curScale, target.scale, 3.0, delta);
-    groupRef.current.scale.set(nextScale, nextScale, nextScale);
-
-    // Rotation interpolation: base scene angle + mouse parallax
-    const mouseRotY = mousePos.x * 0.12;
-    const mouseRotX = -mousePos.y * 0.06;
-    const desiredRotY = target.rotationY + mouseRotY;
-
-    groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, desiredRotY, 3.5, delta);
-    groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, mouseRotX, 3.5, delta);
-  });
-
-  return (
-    <group ref={groupRef} position={target.position} scale={target.scale}>
-      {/* Volumetric Electric Blue Glow Backdrop */}
-      <mesh position={[0, 0, -0.22]}>
-        <planeGeometry args={[2.8, 4.6]} />
-        <meshBasicMaterial
-          color="#0066ff"
-          transparent
-          opacity={0.16}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-
-      {/* Volumetric Violet Glow Accent */}
-      <mesh position={[0.25, 0.2, -0.16]}>
-        <planeGeometry args={[2.5, 4.2]} />
-        <meshBasicMaterial
-          color="#8b5cf6"
-          transparent
-          opacity={0.14}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-
-      {/* Main Character Plane with exact 9:16 aspect ratio (576 x 1024 -> 2.3625 x 4.2) */}
-      <mesh castShadow receiveShadow position={[0, 0, 0]}>
-        <planeGeometry args={[2.36, 4.2]} />
-        <meshStandardMaterial
-          map={activeTexture}
-          roughness={0.35}
-          metalness={0.15}
-          transparent={true}
-        />
-      </mesh>
-
-      {/* Left Electric Blue Rim Light Aura */}
-      <mesh position={[-1.18, 0, 0.02]} rotation={[0, 0.35, 0]}>
-        <planeGeometry args={[0.08, 4.1]} />
-        <meshBasicMaterial
-          color="#00d2ff"
-          transparent
-          opacity={0.65}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-
-      {/* Right Violet Rim Light Aura */}
-      <mesh position={[1.18, 0, 0.02]} rotation={[0, -0.35, 0]}>
-        <planeGeometry args={[0.08, 4.1]} />
-        <meshBasicMaterial
-          color="#8b5cf6"
-          transparent
-          opacity={0.65}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-    </group>
-  );
 }
 
 // Dynamic 3D Equipment that populates the continuous world
@@ -332,7 +178,7 @@ function DynamicWorldEquipment({ currentScene }: { currentScene: number }) {
         />
       )}
 
-      {/* Scene 6 (Values): Dumbbell & Plate with subtle violet float */}
+      {/* Scene 6 (Values): Dumbbell with violet accent float */}
       {currentScene === 6 && (
         <group position={[2.4, 0, -0.4]}>
           <Dumbbell3D scale={0.75} spinSpeed={0.2} accentColor="#8b5cf6" />
@@ -349,7 +195,7 @@ function DynamicWorldEquipment({ currentScene }: { currentScene: number }) {
         </group>
       )}
 
-      {/* Scene 8 (Final): Flanking Dumbbell and Plate under celebratory lighting */}
+      {/* Scene 8 (Final): Flanking Dumbbell and Plate */}
       {currentScene === 8 && (
         <>
           <Dumbbell3D
@@ -389,7 +235,7 @@ export function PresentationWorld3D({ currentScene, isTransitioning }: Presentat
   }, []);
 
   return (
-    <div className="fixed inset-0 w-full h-full pointer-events-none z-0">
+    <div className="fixed inset-0 w-full h-full pointer-events-auto z-0">
       <Canvas
         camera={{ position: [0, 0, 5.7], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
@@ -417,8 +263,8 @@ export function PresentationWorld3D({ currentScene, isTransitioning }: Presentat
           {/* Floating Atmospheric Gym Particles */}
           <GymParticleField count={110} />
 
-          {/* Dynamic Kevin Character with exact user art and transformation state */}
-          <DynamicKevinCharacter
+          {/* Movable & Interactive 3D Kevin Character */}
+          <KevinInteractiveCharacter
             currentScene={currentScene}
             isTransitioning={isTransitioning}
             mousePos={mousePos}

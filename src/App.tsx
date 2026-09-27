@@ -54,10 +54,10 @@ function PresentationStage() {
         isTransitioning={isTransitioning}
       />
 
-      {/* Full-screen scene container */}
+      {/* Full-screen scene container with pass-through for 3D interaction */}
       <div
         ref={stageRef}
-        className="w-full min-h-screen relative z-10"
+        className="w-full min-h-screen relative z-10 pointer-events-none"
         style={{ paddingBottom: '72px' }} // space for ChapterNav
       >
         {ActiveScene ? <ActiveScene /> : null}
